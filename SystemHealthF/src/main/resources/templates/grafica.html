@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/logo.ico}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="static/css/util.css"
+	th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" href="static/css/main.css"
+	th:href="@{/css/main.css}" />
+
+<link rel="stylesheet"
+	href="https://code.highcharts.com/css/highcharts.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="navbar100">
+				<nav
+					class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbarsize">
+					<a class="navbar-brand" th:href="@{/doctor}">System Health</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse"
+						data-target="#navbarNavAltMarkup"
+						aria-controls="navbarNavAltMarkup" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+						<div class="navbar-nav">
+							<a class="nav-item nav-link" th:href="@{/doctor/listaPacientes}">Ver pacientes</a> 
+							<a class="nav-item nav-link" th:href="@{/doctor/listaHospitales}">Lista de hospitales</a> 
+							<a class="nav-item nav-link" th:href="@{/doctor/listaMedicamentos}">Lista de medicamentos</a>
+							<a class="nav-item nav-link" th:href="@{/grafica}">Grafica Medicamentos</a>
+							<a class="nav-item nav-link">
+								<form th:action="@{/logout}" method="post">
+									<input type="submit" value="Logout"
+										style="background-color: transparent;">
+								</form>
+							</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="wrap-grafica100">
+				 	<div  class="h3 pb-5 msjwelcome" sec:authorize="isAuthenticated()">
+					Bienvenido <span sec:authentication="name"></span>
+					</div>
+				<div>
+					<figure class="highcharts-figure">
+						<div id="container-bar"></div>
+					</figure>
+				</div>
+			</div>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/jquery/jquery-3.2.1.min.js}"></script>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/bootstrap/js/popper.js}"></script>
+			<script th:src="@{../vendor/bootstrap/js/bootstrap.min.js}"></script>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/select2/select2.min.js}"></script>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/tilt/tilt.jquery.min.js}"></script>
+			<script>
+				$('.js-tilt').tilt({
+					scale : 1.1
+				})
+
+				$(document).ready(function() {
+					$.ajax({
+						url : "/get-data",
+						success : function(result) {
+							var yearDtls = [];
+							var countDtls = [];
+							console.log(result);
+							Object.keys(result).forEach(function(key) {
+								yearDtls.push(key);
+								countDtls.push(result[key]);
+							});
+							drawChart(yearDtls, countDtls);
+						}
+					});
+				});
+
+				function drawChart(year, viewCounts) {
+					Highcharts.chart('container-bar', {
+						chart : {
+							type : 'column',
+							styledMode : true
+						},
+						title : {
+							text : 'medicamentos más utlizados'
+						},
+						xAxis : [ {
+							title : {
+								text : 'Medicamento'
+							},
+							categories : year
+						} ],
+						yAxis : [ {
+							className : 'highcharts-color-0',
+							title : {
+								text : 'Cantidad'
+							}
+						} ],
+						series : [ {
+							data : viewCounts
+						} ]
+					});
+				}
+			</script>
+			<!--===============================================================================================-->
+			<script th:src="@{../js/main.js}"></script>
+</body>
+</html>

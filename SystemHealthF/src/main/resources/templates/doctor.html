@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/logo.ico}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="static/css/util.css"
+	th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" href="static/css/main.css"
+	th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="navbar100">
+<nav
+					class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbarsize">
+					<a class="navbar-brand" th:href="@{/doctor}">System Health</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse"
+						data-target="#navbarNavAltMarkup"
+						aria-controls="navbarNavAltMarkup" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+						<div class="navbar-nav">
+							<a class="nav-item nav-link" th:href="@{/doctor/listaPacientes}">Ver pacientes</a> 
+							<a class="nav-item nav-link" th:href="@{/doctor/listaMedicamentos}">Lista de medicamentos</a>
+							<a class="nav-item nav-link" th:href="@{/consultorio/{doctorId} (doctorId=${doctor.idDoctor})}">Consultorio</a>
+							<a class="nav-item nav-link" th:href="@{/grafica}">Grafica Medicamentos</a>
+							<a class="nav-item nav-link">
+								<form th:action="@{/logout}" method="post">
+									<input type="submit" value="Logout"
+										style="background-color: transparent;">
+								</form>
+							</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+
+			<div class="wrap-lista100" >
+				<div class="left">
+					<div class="h3 pb-5" sec:authorize="isAuthenticated()">
+						Bienvenido <span sec:authentication="name"></span>
+					</div>
+					<div class="login100-pic js-tilt" data-tilt>
+						<img th:src="|data:image/png;base64,${imagen}|" alt="IMG">
+					</div>
+				</div>
+
+				<div class ="right">
+					<div class="col">
+						<ul class="list-group login100-form validate-form">
+							<li class="list-group-item active">Información</li>
+							<li class="list-group-item"
+								th:text="|Nombre: ${doctor.nombre}|"></li>
+							<li class="list-group-item"
+								th:text="|Apellidos: ${doctor.apellidos}|"></li>
+							<li class="list-group-item"
+								th:text="|Cedula: ${doctor.cedula}|"></li>
+							<li class="list-group-item"
+								th:text="|Edad: ${doctor.edad} años|"></li>
+							<li class="list-group-item"
+								th:text="|Especialidad: ${doctor.especialidad}|"></li>
+						</ul>
+					</div>
+				</div >
+			</div>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/jquery/jquery-3.2.1.min.js}"></script>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/bootstrap/js/popper.js}"></script>
+			<script th:src="@{../vendor/bootstrap/js/bootstrap.min.js}"></script>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/select2/select2.min.js}"></script>
+			<!--===============================================================================================-->
+			<script th:src="@{../vendor/tilt/tilt.jquery.min.js}"></script>
+			<script>
+				$('.js-tilt').tilt({
+					scale : 1.1
+				})
+				
+				
+			</script>
+			<!--===============================================================================================-->
+			<script th:src="@{../js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/logo.ico}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="static/css/util.css"
+	th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" href="static/css/main.css"
+	th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+</head>
+<body th:with="cont=0">
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="navbar100">
+				<nav
+					class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbarsize">
+					<a class="navbar-brand" th:href="@{/doctor}">System Health</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse"
+						data-target="#navbarNavAltMarkup"
+						aria-controls="navbarNavAltMarkup" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+						<div class="navbar-nav">
+							<a class="nav-item nav-link" th:href="@{/doctor/listaPacientes}">Ver
+								pacientes</a>
+								 
+							<a
+								class="nav-item nav-link" th:href="@{/doctor/listaMedicamentos}">Lista
+								de medicamentos</a>
+							<a class="nav-item nav-link">
+								<form th:action="@{/logout}" method="post">
+									<input type="submit" value="Logout">
+								</form>
+							</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+
+			<div class="wrap-lista100">
+				<div class="py-2">
+					<div class="row align-items-center">
+						<div class="col">
+							<ul class="list-group login100-form validate-form">
+								<li class="list-group-item active">Información</li>
+								<li class="list-group-item"
+									th:text="|Nombre: ${paciente.nombre}|"></li>
+								<li class="list-group-item"
+									th:text="|Apellidos: ${paciente.apellidos}|"></li>
+								<li class="list-group-item"
+									th:text="|Edad: ${paciente.edad} años|"></li>
+								<li class="list-group-item"
+									th:text="|Peso: ${paciente.peso} kg|"></li>
+								<li class="list-group-item"
+									th:text="|Estatura: ${paciente.estatura} cm|"></li>
+								<li class="list-group-item" th:text="|Sexo: ${paciente.sexo}|"></li>
+								<li class="list-group-item"
+									th:text="|Tipo de Sangre: ${paciente.tipoDeSangre}|"></li>
+								<li class="list-group-item">
+									<a th:href="@{/formd/{pacienteId} (pacienteId=${paciente.idPaciente})}">Editar Datos</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="col">
+							<div class="accordion" id="accordionExample">
+								<div th:each="n : ${num}" class="card">
+									<div class="card-header" th:id="|heading${n}|">
+										<h2 class="mb-0">
+											<button class="btn btn-link btn-block text-left collapsed"
+												type="button" data-toggle="collapse"
+												th:data-target="|#collapse${n}|" aria-expanded="true"
+												th:aria-controls="|collapse${n}|"
+												th:text="|Receta#${n}|"
+												></button>
+										</h2>
+									</div>
+
+									<div th:id="|collapse${n}|" class="collapse show"
+										aria-labelledby="headingOne" data-parent="#accordionExample">
+										<div class="card-body">
+											<ul class="list-group">
+												<!--  <li th:each="entero : ${mapofmap}" th:with="map=${entero.value}" 
+												th:text="|${map.key.cantidad} ${map.value.nombre}-${map.value.dosis} ${map.key.descripcion}|" 
+												class="list-group-item"></li> -->
+												<div th:if="${entero.key} == ${n}" th:each="entero : ${mapof}"
+												>
+													<li th:each="map: ${entero.value}" th:with="med= ${map.value}"
+													th:text="|${map.key.cantidad} ${med.nombre}-${med.dosis} ${map.key.descripcion}|" 
+												class="list-group-item">
+													</li>
+												</div>
+											</ul>
+											<div class="btn btn-danger text-dark">
+												<a th:href="@{/reporte/{n} (n=${n})}" >Generar PDF </a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="btn btn-warning">
+								<a
+									th:href="@{/receta/{pacienteId} (pacienteId=${paciente.idPaciente})}">Generar
+									Receta</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	</div>
+	<!--===============================================================================================-->
+	<script th:src="@{../vendor/jquery/jquery-3.2.1.min.js}"></script>
+	<!--===============================================================================================-->
+	<script th:src="@{../vendor/bootstrap/js/popper.js}"></script>
+	<script th:src="@{../vendor/bootstrap/js/bootstrap.min.js}"></script>
+	<!--===============================================================================================-->
+	<script th:src="@{../vendor/select2/select2.min.js}"></script>
+	<!--===============================================================================================-->
+	<script th:src="@{../vendor/tilt/tilt.jquery.min.js}"></script>
+	<script>
+		$('.js-tilt').tilt({
+			scale : 1.1
+		})
+	</script>
+	<!--===============================================================================================-->
+	<script th:src="@{../js/main.js}"></script>
+
+</body>
+</html>
